@@ -10,9 +10,9 @@ const server = express()
 const io = socketIO(server);
 
 io.on("connection", socket => {
+  const address = socket.handshake.address;
+  console.log("New connection from " + address.address + ":" + address.port);
   socket.on("name", name => {
-    const address = socket.handshake.address;
-    console.log("New connection from " + address.address + ":" + address.port);
     io.emit("userJoined", name + " entrou na sala.");
   });
   socket.on("addRestaurant", restaurant => {
