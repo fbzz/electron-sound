@@ -35,7 +35,7 @@ io.on("connection", socket => {
   });
   socket.on("vote", vote => {
     console.log("connection :", socket.request.connection._peername.address);
-    contVotes(votes);
+    contVotes(vote);
     io.emit("userVoted", {
       message: socket.name + " Votou em " + vote.name,
       partials: restaurants
