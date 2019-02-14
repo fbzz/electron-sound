@@ -10,8 +10,7 @@ const server = express()
 const io = socketIO(server);
 
 io.on("connection", socket => {
-  const address = socket.handshake.address;
-  console.log("New connection from " + address.address + ":" + address.port);
+  console.log("connection :", socket.request.connection._peername);
   socket.on("name", name => {
     io.emit("userJoined", name + " entrou na sala.");
   });
