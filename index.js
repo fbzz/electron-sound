@@ -20,7 +20,7 @@ addIPtoblacklist = ip => {
 
 io.on("connection", socket => {
   socket.on("name", name => {
-    this.addIPtoblacklist(socket.request.connection._peername.address);
+    addIPtoblacklist(socket.request.connection._peername.address);
     console.log("connection :", socket.request.connection._peername.address);
     io.emit("userJoined", name + " entrou na sala.");
   });
