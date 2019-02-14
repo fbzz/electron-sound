@@ -29,6 +29,6 @@ io.on("connection", socket => {
   });
   socket.on("vote", vote => {
     console.log("connection :", socket.request.connection._peername.address);
-    io.emit("userVoted ", vote);
+    io.emit("userVoted ", { message: "vai se fode" });
   });
 });
