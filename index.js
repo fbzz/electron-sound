@@ -8,6 +8,10 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
+io.configure("development", function() {
+  io.set("transports", ["xhr-polling"]);
+});
+
 io.on("connection", socket => {
   socket.on("name", name => {
     io.emit("userJoined", name + " entrou na sala.");
