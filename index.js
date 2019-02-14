@@ -11,6 +11,7 @@ const io = socketIO(server);
 
 io.on("connection", socket => {
   socket.on("name", name => {
+    console.log(name);
     io.emit("userJoined", name + " entrou na sala.");
   });
   socket.on("addRestaurant", restaurant => {
