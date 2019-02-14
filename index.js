@@ -35,6 +35,7 @@ io.on("connection", socket => {
   });
   socket.on("vote", vote => {
     const filt = blacklist.list.filter(res => {
+      console.log(res);
       res === socket.request.connection._peername.address;
     });
     if (filt.length > 0) {
