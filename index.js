@@ -4,7 +4,7 @@ const PORT = process.env.PORT || 3000;
 const fs = require("fs");
 
 const server = express()
-  .use((req, res) => res.send({}))
+  .use("/", express.static("public"))
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 const io = socketIO(server);
