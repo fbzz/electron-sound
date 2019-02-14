@@ -34,6 +34,13 @@ io.on("connection", socket => {
     io.emit("newRestaurant", this.restaurants);
   });
   socket.on("vote", vote => {
+    const filt = blacklist.list.filter(res => {
+      res === socket.request.connection._peername.address;
+    });
+    if (filt.length > 0) {
+      io.emit("userVotedRejected", { message: "Doente já votou" });
+      return;
+    }
     console.log("connection :", socket.request.connection._peername.address);
     addIPtoblacklist(socket.request.connection._peername.address);
     contVotes(vote);
