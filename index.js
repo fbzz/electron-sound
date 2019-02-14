@@ -13,15 +13,13 @@ const io = socketIO(server);
 let blacklist = JSON.parse(fs.readFileSync("ip_blacklist.json", "utf8"));
 
 function addIPtoblacklist(ip) {
-  blacklist.ip_blacklist.push(ip);
+  blacklist.list.push(ip);
   fs.writeFileSync("ip_blacklist.json", JSON.stringify(blacklist));
   console.log("Ip added to the blacklist");
 }
 
 io.on("connection", socket => {
   socket.on("name", name => {
-    addIPtoblacklist(socket.request.connection._peername.address);
-    console.log("connection :", socket.request.connection._peername.address);
     io.emit("userJoined", name + " entrou na sala.");
   });
   socket.on("addRestaurant", restaurant => {
@@ -29,6 +27,8 @@ io.on("connection", socket => {
     io.emit("newRestaurant", this.restaurants);
   });
   socket.on("vote", vote => {
+    //addIPtoblacklist(socket.request.connection._peername.address);
+    console.log("connection :", socket.request.connection._peername.address);
     io.emit("userVoted ", vote);
   });
 });
