@@ -49,7 +49,7 @@ io.on("connection", socket => {
     io.emit("newRestaurant", this.restaurants);
   });
   socket.on("vote", vote => {
-    addIPtoblacklist(socket.request.connection._peername.address);
+    //  addIPtoblacklist(socket.request.connection._peername.address);
     contVotes(vote);
     io.emit("userVoted", {
       message: socket.name + " Votou em " + vote.name,
