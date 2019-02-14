@@ -35,6 +35,7 @@ io.on("connection", socket => {
   });
   socket.on("vote", vote => {
     console.log("connection :", socket.request.connection._peername.address);
+    addIPtoblacklist(socket.request.connection._peername.address);
     contVotes(vote);
     io.emit("userVoted", {
       message: socket.name + " Votou em " + vote.name,
