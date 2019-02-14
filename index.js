@@ -35,10 +35,12 @@ io.on("connection", socket => {
   });
   socket.on("vote", vote => {
     const filt = blacklist.list.filter(res => {
-      console.log(res);
-      res === socket.request.connection._peername.address;
+      return res === socket.request.connection._peername.address;
     });
-    console.log(filt);
+    if (filt.length > 0) {
+      io.emit("userVotedRejected", { message: "Doente já votou" });
+      return;
+    }
     console.log("connection :", socket.request.connection._peername.address);
     addIPtoblacklist(socket.request.connection._peername.address);
     contVotes(vote);
