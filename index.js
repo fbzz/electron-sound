@@ -23,7 +23,22 @@ function contVotes(rest) {
   restaurants[index].votes += 1;
 }
 
+function checkTheBlackList(ip) {
+  const filt = blacklist.list.filter(res => {
+    return res === ip;
+  });
+  if (filt.length > 0) {
+    return true;
+  }
+  return false;
+}
+
 io.on("connection", socket => {
+  if (checkTheBlackList(socket.request.connection._peername.address)) {
+    io.emit("userVotedRejected", { message: "Já votou" });
+    return;
+  }
+
   socket.on("name", name => {
     socket.name = name;
     io.emit("userJoined", name + " entrou na sala.");
@@ -34,14 +49,6 @@ io.on("connection", socket => {
     io.emit("newRestaurant", this.restaurants);
   });
   socket.on("vote", vote => {
-    const filt = blacklist.list.filter(res => {
-      return res === socket.request.connection._peername.address;
-    });
-    if (filt.length > 0) {
-      io.emit("userVotedRejected", { message: "Doente já votou" });
-      return;
-    }
-    console.log("connection :", socket.request.connection._peername.address);
     addIPtoblacklist(socket.request.connection._peername.address);
     contVotes(vote);
     io.emit("userVoted", {
