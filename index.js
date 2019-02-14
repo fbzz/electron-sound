@@ -1,16 +1,13 @@
-var app = require("express")();
-var http = require("http").Server(app);
-var io = require("socket.io")(http);
-
+const express = require("express");
+const socketIO = require("socket.io");
+const PORT = process.env.PORT || 3000;
 const restaurants = [];
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
-});
+const server = express()
+  .use((req, res) => res.send({}))
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-io.configure("development", function() {
-  io.set("transports", ["xhr-polling"]);
-});
+const io = socketIO(server);
 
 io.on("connection", socket => {
   socket.on("name", name => {
@@ -23,8 +20,4 @@ io.on("connection", socket => {
   socket.on("vote", vote => {
     io.emit("userVoted ", vote);
   });
-});
-
-http.listen(3000, () => {
-  console.log("listening on *:3000");
 });
