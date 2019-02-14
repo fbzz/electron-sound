@@ -11,7 +11,8 @@ const io = socketIO(server);
 
 io.on("connection", socket => {
   socket.on("name", name => {
-    console.log(name);
+    const address = socket.handshake.address;
+    console.log("New connection from " + address.address + ":" + address.port);
     io.emit("userJoined", name + " entrou na sala.");
   });
   socket.on("addRestaurant", restaurant => {
