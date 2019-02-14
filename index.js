@@ -35,7 +35,7 @@ function checkTheBlackList(ip) {
 
 io.on("connection", socket => {
   if (checkTheBlackList(socket.request.connection._peername.address)) {
-    io.emit("userVotedRejected", { message: "Já votou" });
+    io.emit("userVotedRejected", { partials: restaurants });
     return;
   }
 
