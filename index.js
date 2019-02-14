@@ -18,6 +18,11 @@ function addIPtoblacklist(ip) {
   console.log("Ip added to the blacklist");
 }
 
+function contVotes(rest) {
+  const index = restaurants.findIndex(data => data.id == rest.id);
+  restaurants[index].votes += 1;
+}
+
 io.on("connection", socket => {
   socket.on("name", name => {
     socket.name = name;
@@ -30,6 +35,10 @@ io.on("connection", socket => {
   });
   socket.on("vote", vote => {
     console.log("connection :", socket.request.connection._peername.address);
-    io.emit("userVoted", { message: socket.name + " Votou em " + vote.name });
+    contVotes(votes);
+    io.emit("userVoted", {
+      message: socket.name + " Votou em " + vote.name,
+      partials: restaurants
+    });
   });
 });
