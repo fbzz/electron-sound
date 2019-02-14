@@ -12,11 +12,11 @@ const io = socketIO(server);
 
 let blacklist = JSON.parse(fs.readFileSync("ip_blacklist.json", "utf8"));
 
-addIPtoblacklist = ip => {
-  // blacklist.ip_blacklist.push(ip);
-  // fs.writeFileSync("ip_blacklist.json", JSON.stringify(blacklist));
+function addIPtoblacklist(ip) {
+  blacklist.ip_blacklist.push(ip);
+  fs.writeFileSync("ip_blacklist.json", JSON.stringify(blacklist));
   console.log("Ip added to the blacklist");
-};
+}
 
 io.on("connection", socket => {
   socket.on("name", name => {
