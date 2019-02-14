@@ -2,7 +2,6 @@ const express = require("express");
 const socketIO = require("socket.io");
 const PORT = process.env.PORT || 3000;
 const fs = require("fs");
-const restaurants = [];
 
 const server = express()
   .use((req, res) => res.send({}))
@@ -11,6 +10,7 @@ const server = express()
 const io = socketIO(server);
 
 let blacklist = JSON.parse(fs.readFileSync("ip_blacklist.json", "utf8"));
+const restaurants = JSON.parse(fs.readFileSync("restaurants.json", "utf8"));
 
 function addIPtoblacklist(ip) {
   blacklist.list.push(ip);
@@ -21,13 +21,13 @@ function addIPtoblacklist(ip) {
 io.on("connection", socket => {
   socket.on("name", name => {
     io.emit("userJoined", name + " entrou na sala.");
+    io.emit("restaurant", restaurants);
   });
   socket.on("addRestaurant", restaurant => {
     this.restaurants.push(restaurant);
     io.emit("newRestaurant", this.restaurants);
   });
   socket.on("vote", vote => {
-    //addIPtoblacklist(socket.request.connection._peername.address);
     console.log("connection :", socket.request.connection._peername.address);
     io.emit("userVoted ", vote);
   });
