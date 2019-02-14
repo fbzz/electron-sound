@@ -20,6 +20,7 @@ function addIPtoblacklist(ip) {
 
 io.on("connection", socket => {
   socket.on("name", name => {
+    socket.name = name;
     io.emit("userJoined", name + " entrou na sala.");
     io.emit("restaurant", restaurants);
   });
@@ -29,6 +30,6 @@ io.on("connection", socket => {
   });
   socket.on("vote", vote => {
     console.log("connection :", socket.request.connection._peername.address);
-    io.emit("userVoted ", { message: "vai se fode" });
+    io.emit("userVoted", { message: socket.name + " Votou em " + vote.name });
   });
 });
