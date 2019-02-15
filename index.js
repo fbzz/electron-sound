@@ -9,6 +9,15 @@ const server = express()
 
 const io = socketIO(server);
 
+let timeToEnd = 86400;
+let convertedTime = null;
+setInterval(function() {
+  timeToEnd--;
+  const date = new Date(null);
+  date.setSeconds(timeToEnd); 
+  convertedTime = date.toISOString().substr(11, 8) 
+}, 1000);
+
 let blacklist = JSON.parse(fs.readFileSync("ip_blacklist.json", "utf8"));
 const restaurants = JSON.parse(fs.readFileSync("restaurants.json", "utf8"));
 
@@ -33,7 +42,27 @@ function checkTheBlackList(ip) {
   return false;
 }
 
+function startCounter(io){
+
+  setInterval(function() {
+    countdown--;
+    io.sockets.emit('timer', { countdown: convertedTime });
+  }, 1000);
+
+  const date = new Date(null);
+  date.setSeconds(60*60); // specify value for SECONDS here
+  this.setState({time : date.toISOString().substr(11, 8) }) 
+}
+
 io.on("connection", socket => {
+
+
+  setInterval(function() {
+
+    io.emit('timer', { countdown: convertedTime });
+  }, 1000);
+
+
   if (checkTheBlackList(socket.request.connection._peername.address)) {
     io.emit("userVotedRejected", { partials: restaurants });
     return;
