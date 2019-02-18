@@ -10,6 +10,17 @@ const server = express()
 const io = socketIO(server);
 
 let timeToEnd = 86400;
+
+
+const startDate = new Date();
+// Do your operations
+const endDate   = new Date();
+
+endDate.setDate(endDate.getDate() + 1);
+endDate.setHours(12);
+
+timeToEnd = (endDate.getTime() - startDate.getTime()) / 1000;
+
 let convertedTime = null;
 setInterval(function() {
   timeToEnd--;
