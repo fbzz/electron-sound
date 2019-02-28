@@ -15,7 +15,7 @@ const io = socketIO(server);
 let timeToEnd = 86400;
 
 
-const startDate = moment(new Date());
+const startDate = moment(new Date()).tz('America/Sao_Paulo');
 // Do your operations
 const endDate   = moment(new Date());
 
