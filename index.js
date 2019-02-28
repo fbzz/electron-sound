@@ -19,7 +19,7 @@ let timeToEnd = 86400;
 
 const startDate = moment(new Date()).tz('America/Sao_Paulo');
 // Do your operations
-const endDate   = moment(new Date());
+const endDate   = moment(new Date()).tz('America/Sao_Paulo');
 
 console.log(startDate);
 
@@ -35,13 +35,13 @@ timeToEnd = (endDate.valueOf() - startDate.valueOf()) / 1000;
 let convertedTime = null;
 setInterval(function() {
     timeToEnd--;
-  const date = new Date(null);
+
   const duration = moment.duration(timeToEnd, 'seconds');
 
   const formatted = duration.format("hh:mm:ss");
 
-  
-  convertedTime = duration.format("hh:mm:ss");
+    console.log(formatted);
+  convertedTime = formatted
 }, 1000);
 
 let blacklist = JSON.parse(fs.readFileSync("ip_blacklist.json", "utf8"));
