@@ -2,6 +2,9 @@ const express = require("express");
 const socketIO = require("socket.io");
 const PORT = process.env.PORT || 3000;
 const fs = require("fs");
+const moment = require("moment-timezone");
+
+moment.tz('America/Sao_Paulo')
 
 const server = express()
   .use("/", express.static("public"))
@@ -12,14 +15,20 @@ const io = socketIO(server);
 let timeToEnd = 86400;
 
 
-const startDate = new Date();
+const startDate = moment(new Date());
 // Do your operations
-const endDate   = new Date();
+const endDate   = moment(new Date());
 
-endDate.setDate(endDate.getDate() + 1);
-endDate.setHours(12);
+console.log(startDate);
 
-timeToEnd = (endDate.getTime() - startDate.getTime()) / 1000;
+endDate.hours(12);
+endDate.minutes(0);
+endDate.second(0);
+
+console.log(endDate);
+
+timeToEnd = (endDate.valueOf() - startDate.valueOf()) / 1000;
+
 
 let convertedTime = null;
 setInterval(function() {
