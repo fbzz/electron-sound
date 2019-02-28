@@ -3,7 +3,9 @@ const socketIO = require("socket.io");
 const PORT = process.env.PORT || 3000;
 const fs = require("fs");
 const moment = require("moment-timezone");
+const momentDurationFormatSetup = require("moment-duration-format");
 
+momentDurationFormatSetup(moment);
 moment.tz('America/Sao_Paulo')
 
 const server = express()
@@ -32,10 +34,14 @@ timeToEnd = (endDate.valueOf() - startDate.valueOf()) / 1000;
 
 let convertedTime = null;
 setInterval(function() {
-  timeToEnd--;
+    timeToEnd--;
   const date = new Date(null);
-  date.setSeconds(timeToEnd);
-  convertedTime = date.toISOString().substr(11, 8);
+  const duration = moment.duration(timeToEnd, 'seconds');
+
+  const formatted = duration.format("hh:mm:ss");
+
+  
+  convertedTime = duration.format("hh:mm:ss");
 }, 1000);
 
 let blacklist = JSON.parse(fs.readFileSync("ip_blacklist.json", "utf8"));
